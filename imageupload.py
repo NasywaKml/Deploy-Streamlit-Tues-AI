@@ -15,6 +15,14 @@ if not os.path.exists("yolov5"):
 # Install dependencies jika belum ada
 os.system("pip install -r yolov5/requirements.txt")
 
+# Tambahkan YOLOv5 ke dalam PYTHONPATH agar utils bisa ditemukan
+import sys
+sys.path.append("yolov5")
+
+# Load modul YOLOv5 setelah memastikan tersedia
+from utils.downloads import attempt_download
+
+st.success("YOLOv5 repository and dependencies loaded!")
 # Path model di dalam server Streamlit
 MODEL_PATH = "best.pt"
 MODEL_URL = "https://github.com/NasywaKml/Deploy-Streamlit-Tues-AI/raw/main/best.pt"
