@@ -1,0 +1,12 @@
+how to fix when i cannot run my streamlit through the vscode:
+
+1.  USE CMD
+2. find streamlit ( if it's already installed or not):
+	pip show streamlit
+3. if it's notr installed:
+	"C:/Users/Nasywa Kamila/AppData/Local/Programs/Python/Python310/python.exe" -m pip install streamlit
+	(use the path of your python)
+4. if it's already installed, then jjust run it through cmd (again)
+	python -m streamlit run "D:\Tubes AI\tubesstreamlit.py"
+
+
