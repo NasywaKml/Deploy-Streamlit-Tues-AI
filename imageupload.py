@@ -3,7 +3,26 @@ import torch
 import numpy as np
 import cv2
 from PIL import Image
-model = torch.hub.load('ultralytics/yolov5', 'custom', path= 'best.pt', force_reload=True)
+
+MODEL_PATH = "best.pt"
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1hKfTCamKkUcRLKnGEoxQ0JQ06qWDhZus"
+
+def download_model():
+    """Fungsi untuk mengunduh model dari Google Drive."""
+    with requests.get(MODEL_URL, stream=True) as r:
+        r.raise_for_status()
+        with open(MODEL_PATH, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
+    st.success("Model downloaded successfully!")
+
+# Cek apakah model sudah ada, jika tidak unduh
+if not os.path.exists(MODEL_PATH):
+    st.info("Downloading YOLOv5 model...")
+    download_model()
+
+# Load YOLOv5 Model
+model = torch.hub.load("ultralytics/yolov5", "custom", path=MODEL_PATH, source="local", force_reload=True)
 
 
 # Streamlit UI
