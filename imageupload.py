@@ -3,7 +3,8 @@ import torch
 import numpy as np
 import cv2
 from PIL import Image
-model = torch.hub.load('ultralytics/yolov5', 'custom', path= "tubesstreamlit.py")
+model = torch.hub.load('ultralytics/yolov5', 'custom', path="C:/Users/Nasywa Kamila/Downloads/best.pt")
+
 
 # Streamlit UI
 st.title("Deteksi Burung dengan YOLOv5")
