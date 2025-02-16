@@ -3,7 +3,7 @@ import torch
 import numpy as np
 import cv2
 from PIL import Image
-model = torch.hub.load('ultralytics/yolov5', 'custom', path= 'best.pt')
+model = torch.hub.load('ultralytics/yolov5', 'custom', path= 'best.pt', force_reload=True)
 
 
 # Streamlit UI
