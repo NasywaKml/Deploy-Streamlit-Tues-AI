@@ -5,26 +5,33 @@ import cv2
 import os
 import requests 
 from PIL import Image
+import os
+import requests
+import streamlit as st
 
+# Path model di dalam server Streamlit
 MODEL_PATH = "best.pt"
-MODEL_URL = "https://drive.google.com/uc?export=download&id=1hKfTCamKkUcRLKnGEoxQ0JQ06qWDhZus"
 
-def download_model():
-    """Fungsi untuk mengunduh model dari Google Drive."""
-    with requests.get(MODEL_URL, stream=True) as r:
-        r.raise_for_status()
-        with open(MODEL_PATH, "wb") as f:
-            for chunk in r.iter_content(chunk_size=8192):
-                f.write(chunk)
-    st.success("Model downloaded successfully!")
+# Link langsung ke file model di GitHub
+MODEL_URL = "https://github.com/NasywaKml/Deploy-Streamlit-Tues-AI/raw/main/best.pt"
 
-# Cek apakah model sudah ada, jika tidak unduh
+# Cek apakah model sudah ada, jika belum, unduh dari GitHub
 if not os.path.exists(MODEL_PATH):
     st.info("Downloading YOLOv5 model...")
-    download_model()
+    response = requests.get(MODEL_URL, stream=True)
+
+    if response.status_code == 200:
+        with open(MODEL_PATH, "wb") as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
+        st.success("Model downloaded successfully!")
+    else:
+        st.error(f"Failed to download model. HTTP Status: {response.status_code}")
 
 # Load YOLOv5 Model
-model = torch.hub.load("ultralytics/yolov5", "custom", path=MODEL_PATH, source="local", force_reload=True)
+import torch
+model = torch.hub.load("ultralytics/yolov5", "custom", path=MODEL_PATH, source="local")
+
 
 
 # Streamlit UI
