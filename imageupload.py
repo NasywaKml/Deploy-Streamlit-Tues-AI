@@ -2,6 +2,8 @@ import streamlit as st
 import torch
 import numpy as np
 import cv2
+import os
+import requests 
 from PIL import Image
 
 MODEL_PATH = "best.pt"
