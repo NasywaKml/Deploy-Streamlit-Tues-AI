@@ -6,16 +6,20 @@ import os
 import requests 
 from PIL import Image
 import os
-import requests
-import streamlit as st
+
+# Pastikan YOLOv5 sudah di-clone
+if not os.path.exists("yolov5"):
+    st.info("Cloning YOLOv5 repository...")
+    os.system("git clone https://github.com/ultralytics/yolov5.git")
+
+# Install dependencies jika belum ada
+os.system("pip install -r yolov5/requirements.txt")
 
 # Path model di dalam server Streamlit
 MODEL_PATH = "best.pt"
-
-# Link langsung ke file model di GitHub
 MODEL_URL = "https://github.com/NasywaKml/Deploy-Streamlit-Tues-AI/raw/main/best.pt"
 
-# Cek apakah model sudah ada, jika belum, unduh dari GitHub
+# Cek apakah model sudah ada, jika tidak, unduh dari GitHub
 if not os.path.exists(MODEL_PATH):
     st.info("Downloading YOLOv5 model...")
     response = requests.get(MODEL_URL, stream=True)
@@ -28,9 +32,16 @@ if not os.path.exists(MODEL_PATH):
     else:
         st.error(f"Failed to download model. HTTP Status: {response.status_code}")
 
-# Load YOLOv5 Model
-import torch
-model = torch.hub.load("ultralytics/yolov5", "custom", path=MODEL_PATH, source="local")
+# Load YOLOv5 Model secara manual dari script yang sudah di-clone
+from yolov5.models.experimental import attempt_load
+from yolov5.utils.general import non_max_suppression
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = attempt_load(MODEL_PATH, map_location=device)
+model.eval()
+
+st.success("YOLOv5 model loaded successfully!")
+
 
 
 
