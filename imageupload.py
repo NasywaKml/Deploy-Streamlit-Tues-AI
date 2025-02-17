@@ -2,54 +2,16 @@ import streamlit as st
 import torch
 import numpy as np
 import cv2
-import os
-import requests 
 from PIL import Image
+import gdown
 import os
 
-# Pastikan YOLOv5 sudah di-clone
-if not os.path.exists("yolov5"):
-    st.info("Cloning YOLOv5 repository...")
-    os.system("git clone https://github.com/ultralytics/yolov5.git")
 
-# Install dependencies jika belum ada
-os.system("pip install -r yolov5/requirements.txt")
+# Explicitly specify YOLOv5 local path
+if not os.path.exists("best.pt") or os.path.getsize("yolov5.pt") == 0 :
+    gdown.download("https://drive.google.com/uc?id=1hKfTCamKkUcRLKnGEoxQ0JQ06qWDhZus", "best.pt")
 
-# Tambahkan YOLOv5 ke dalam PYTHONPATH agar utils bisa ditemukan
-import sys
-sys.path.append("yolov5")
-
-# Load modul YOLOv5 setelah memastikan tersedia
-from utils.downloads import attempt_download
-
-st.success("YOLOv5 repository and dependencies loaded!")
-# Path model di dalam server Streamlit
-MODEL_PATH = "best.pt"
-MODEL_URL = "https://github.com/NasywaKml/Deploy-Streamlit-Tues-AI/raw/main/best.pt"
-
-# Cek apakah model sudah ada, jika tidak, unduh dari GitHub
-if not os.path.exists(MODEL_PATH):
-    st.info("Downloading YOLOv5 model...")
-    response = requests.get(MODEL_URL, stream=True)
-
-    if response.status_code == 200:
-        with open(MODEL_PATH, "wb") as f:
-            for chunk in response.iter_content(chunk_size=8192):
-                f.write(chunk)
-        st.success("Model downloaded successfully!")
-    else:
-        st.error(f"Failed to download model. HTTP Status: {response.status_code}")
-
-# Load YOLOv5 Model secara manual dari script yang sudah di-clone
-from yolov5.models.experimental import attempt_load
-from yolov5.utils.general import non_max_suppression
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = attempt_load(MODEL_PATH, map_location=device)
-model.eval()
-
-st.success("YOLOv5 model loaded successfully!")
-
+model = torch.hub.load('yolov5', 'custom', path="best.pt", source='local',force_reload=True)
 
 
 
