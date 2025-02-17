@@ -9,17 +9,8 @@ from ultralytics import YOLO
 
 
 # Explicitly specify YOLOv5 local path
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
-
-gauth = GoogleAuth()
-gauth.LocalWebserverAuth()  # Authenticate
-drive = GoogleDrive(gauth)
-
-file_id = "1EiG6pPnhVokLRBwUt9rNk6FhsvkUv1ri"
-file = drive.CreateFile({'id': file_id})
-file.GetContentFile("best.pt")
-
+if not os.path.exists("best.pt"):
+    gdown.download("https://drive.google.com/file/d/1EiG6pPnhVokLRBwUt9rNk6FhsvkUv1ri/view?usp=drive_link", "best.pt")
 
 model = YOLO("best.pt")
 
@@ -114,4 +105,3 @@ elif mode == "Live Webcam":
 
     # Menutup koneksi webcam
     cap.release()
-
