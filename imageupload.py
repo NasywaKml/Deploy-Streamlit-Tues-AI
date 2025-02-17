@@ -5,13 +5,14 @@ import cv2
 from PIL import Image
 import gdown
 import os
+from ultralytics import YOLO
 
 
 # Explicitly specify YOLOv5 local path
-if not os.path.exists("best.pt") :
+if not os.path.exists("best.pt") or os.path.getsize("yolov5.pt") == 0 :
     gdown.download("https://drive.google.com/uc?id=1hKfTCamKkUcRLKnGEoxQ0JQ06qWDhZus", "best.pt")
 
-model = torch.hub.load('ultralytics/yolov5', 'custom', path="best.pt", source='local',force_reload=True)
+model = YOLO("best.pt")
 
 
 
