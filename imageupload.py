@@ -45,7 +45,7 @@ if mode == "Live Webcam":
     st.write("Mode Webcam Langsung")
     FRAME_WINDOW = st.image([])
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     if not cap.isOpened():
         st.error("Error: Webcam tidak ditemukan atau tidak dapat diakses.")
     else:
