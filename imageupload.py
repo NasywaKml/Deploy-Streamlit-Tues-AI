@@ -87,7 +87,23 @@ elif mode == "Upload Video":
 
         cap.release()
 elif mode == "Live Webcam":
-    st.write("Mode Live Webcam (WebRTC)")
-    webrtc_streamer(key="webcam", video_transformer_factory=VideoTransformer)
+    st.write("Mode Webcam Langsung")
+    FRAME_WINDOW = st.image([])
+
+    # Membuka koneksi ke webcam
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        st.error("Error: Webcam tidak ditemukan atau tidak dapat diakses.")
+    else:
+        # Menampilkan video dari webcam secara real-time
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            detected_frame = detect_objects(frame)
+            FRAME_WINDOW.image(detected_frame)
+
     # Menutup koneksi webcam
     cap.release()
