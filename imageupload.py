@@ -45,20 +45,24 @@ if mode == "Live Webcam":
     st.write("Mode Webcam Langsung")
     FRAME_WINDOW = st.image([])
 
-    cap = cv2.VideoCapture(1)
+    FRAME_WINDOW = st.image([])
+    cap = cv2.VideoCapture(0)
+
     if not cap.isOpened():
         st.error("Error: Webcam tidak ditemukan atau tidak dapat diakses.")
     else:
-        while cap.isOpened():
+        run = st.checkbox("Start Webcam")
+
+        while run:
             ret, frame = cap.read()
             if not ret:
+                st.error("Tidak dapat membaca frame dari webcam.")
                 break
+    
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        FRAME_WINDOW.image(frame)
 
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            detected_frame = detect_objects(frame)
-            FRAME_WINDOW.image(detected_frame)
-
-        cap.release()
+    cap.release()
 
 
 elif mode == "Upload Video":
