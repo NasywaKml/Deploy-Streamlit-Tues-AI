@@ -9,7 +9,7 @@ from ultralytics import YOLO
 
 
 # Explicitly specify YOLOv5 local path
-if not os.path.exists("best.pt") or os.path.getsize("yolov5.pt") == 0 :
+if not os.path.exists("best.pt"):
     gdown.download("https://drive.google.com/uc?id=1hKfTCamKkUcRLKnGEoxQ0JQ06qWDhZus", "best.pt")
 
 model = YOLO("best.pt")
